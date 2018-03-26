@@ -1,0 +1,14 @@
+data
+chiimp
+results/*.pdf
+results/*.html
+samples-*.csv
+*.tex
+alignment-images
+alignments
+allele-sequences
+histograms
+processed-samples
+report.html
+results.rds
+sample-distances.csv

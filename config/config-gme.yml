@@ -1,0 +1,16 @@
+---
+ 
+fp_dataset: metadata/samples-gme.csv
+fp_locus_attrs: metadata/locus_attrs.csv
+fp_allele_names: metadata/known_alleles_combined.csv
+
+output:
+  dp: results/gme
+  fp_rds: results.rds
+report.hash_len: 6
+report.group_samples: True
+report.title: Microsatellite Report - GME Samples
+
+report.locus_chunks:
+  "A-D": ["A", "B", "C", "D"]
+  "1-4": ["1", "2", "3", "4"]

@@ -1,0 +1,14 @@
+---
+ 
+fp_dataset: metadata/samples-gmblind2.csv
+fp_locus_attrs: metadata/locus_attrs.csv
+fp_allele_names: metadata/known_alleles.csv
+fp_genotypes_known: metadata/known_genotypes.csv
+output:
+  dp: results/gombe-blinded-test-2-simple
+  fp_rds: results.rds
+report.hash_len: 0
+report.group_samples: True
+report.na.replicates: Pooled
+report.title: Microsatellite Report - Gombe Second Blinded Panel - Simple Filtering
+sample_summary_func: summarize_sample_naive
