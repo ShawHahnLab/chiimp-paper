@@ -1,10 +1,11 @@
 ---
 title: "Figures"
 author: "Jesse Connell"
-date: "2018/02/23"
+date: "2018/05/15"
 output:
   html_document:
     css: "figures.css"
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -80,40 +81,28 @@ pandoc_pdf <- function(data, fp_out, title) {
 }
 ```
 
+# Main
+
 ## Figure 1
 
 ```{r Fig1}
 
 figure_1 <- function() {
   # Panel a
-  # Color-coding added manually to highlight the different peaks.
-  # See the processed sample table for more detail on the sequence content:
-  # results/gombe-blinded-test-2/processed-samples/1-10-1-2.csv
-  histogram(gmblindsimple$data[["1-10-1-2"]],
-            main = "a) GM Blinded 24 Replicate 1 - Histogram for Sample 10 Locus 2 (Simple Filtering)",
-            locus.name = NA,
-            cutoff_fraction = NA,
-            xlim = c(0, 450))
+  histogram(gm24$data[["2-4861-C"]],
+            main = "Sanger-vs-MiSeq 24 - Histogram for Sample 4861 Locus C",
+            sample.summary = gm24$summary["2-4861-C", ],
+            locus.name = "C",
+            cutoff_fraction = 0.05,
+            xlim = c(125, 225))
   
-  # Panel d
-  histogram(gmblind$data[["1-10-1-2"]],
-            main = "d) GM Blinded 24 Replicate 1 - Histogram for Sample 10 Locus 2",
-            sample.summary = gmblind$summary["1-10-1-2", ],
-            #locus.name = NA,
-            #cutoff_fraction = NA,
-            xlim = c(0, 450))
+  #Panel b
+  invisible(plot_alignment(gm24$alignments[["1"]],
+                 main = "a) Sanger-vs-MiSeq 24 - Alignment for Locus 1"))
   
-  # Panels b, e created manually
-  
-  # Panel c
-  # Locus 1 simple filters alignment
-  invisible(plot_alignment(align_rep1_simple[["1"]],
-    main = "c) GM Blinded 24 Replicate 1 - Alignment for Locus 1 (Simple Filtering)"))
-  
-  # Panel f
-  # Locus 1 all filters alignment
-  invisible(plot_alignment(align_rep1[["1"]],
-                           main = "f) GM Blinded 24 Replicate 1 - Alignment for Locus 1"))  
+  #Panel c
+  invisible(plot_alignment(gm24$alignments[["C"]],
+                 main = "b) Sanger-vs-MiSeq 24 - Alignment for Locus C"))
 }
 
 figure_pdf(1)
@@ -125,47 +114,10 @@ figure_1()
 ## Figure 2
 
 ```{r Fig2}
-
-# Panel a
-# (Panels b - e created manually)
-figure_2 <- function() {
-  s <- subset(gmblindfull$summary, Sample == 11)
-  tbl <- summarize_genotypes(s)
-  report_genotypes(tbl, hash.len = 0, na.replicates = "Pooled")
-}
-
-data <- figure_2()
-save_table(data, file.path(dp_results, "figure2.csv"))
-k <-  knitr::kable(data, row.names = FALSE, format = "html")
-kableExtra::kable_styling(k)
-```
-
-## Figure 3
-
-```{r Fig3}
-figure_3 <- function() {
-  #Panel a
-  invisible(plot_alignment(gm24$alignments[["1"]],
-                 main = "a) Sanger-vs-MiSeq 24 - Alignment for Locus 1"))
-  
-  #Panel b
-  invisible(plot_alignment(gm24$alignments[["C"]],
-                 main = "b) Sanger-vs-MiSeq 24 - Alignment for Locus C"))  
-}
-
-figure_pdf(3)
-invisible(dev.off())
-
-figure_3()
-```
-
-## Figure 4
-
-```{r Fig4}
 ## homplasy example and inheritance.
 
 # Panel a: alignment of the 234-bp alleles for Locus 3.
-figure_4 <- function() {
+figure_2 <- function() {
   # This version is color-coded differently but shows the same sequence content.
   alleles <- subset(gm24$allele.names[grep("^234-.", gm24$allele.names$Name), ],
                     Locus == "3")
@@ -181,25 +133,25 @@ figure_4 <- function() {
                  showNumbering = c("none"),
                  showLogo = "none",
                  output = "pdf",
-                 file = "figure4.pdf",
+                 file = "figure2.pdf",
                  paperWidth = 10,
                  paperHeight = 3,
                  askForOverwrite = FALSE)
   setwd(.wd)
 }
 
-figure_4()
+figure_2()
 # Panel b
 # Manually-created family tree using the allele names identified.
 ```
 
-![](results/figure4.pdf)
+![](results/figure2.pdf)
 
-## Figure 5
+## Figure 3
 
-```{r Fig5, results='asis', fig.width=10, fig.height=4}
+```{r Fig3, results='asis', fig.width=10, fig.height=4}
 
-figure_5 <- function() {
+figure_3 <- function() {
   samps <- c("4821", "4807", "4566")
 
   # Panel a - c
@@ -230,7 +182,7 @@ figure_5 <- function() {
                      cellwidth = 9,
                      cellheight = 12)
   
-  figure_pdf("5d")
+  figure_pdf("3d")
   f()
   dev.off()
   
@@ -239,13 +191,13 @@ figure_5 <- function() {
   f()
 }
 
-figure_5()
+figure_3()
 
 ```
 
-## Figure 6
+## Figure 4
 
-```{r Fig6, fig.width=10, fig.height=12, dev="png"}
+```{r Fig4, fig.width=10, fig.height=12, dev="png"}
 ## Alignments for GME/Gombe/Both for loci B and D
 
 # known genotypes for GME
@@ -263,7 +215,7 @@ alignments <- align_alleles(g)
 alignments_gme <- align_alleles(g_gme)
 alignments_combo <- align_alleles(g_combo)
 
-figure_6 <- function(...) {
+figure_4 <- function(...) {
   plot_alignment(alignments_gme[["B"]],   main = "GME Locus B", ...)
   plot_alignment(alignments[["B"]],       main = "Gombe Locus B", ...)
   plot_alignment(alignments_combo[["B"]], main = "Combined Locus B", ...)
@@ -273,67 +225,33 @@ figure_6 <- function(...) {
   invisible()
 }
 
-figure_pdf(6, width = 12, height=12)
+figure_pdf(4, width = 12, height=12)
 layout(matrix(c(rep(1:3, each=3, times=2),
                 rep(4:6, each=3, times=2),
                 rep(0, 9)), ncol=5))
-figure_6(display = c(yAxis = FALSE))
+figure_4(display = c(yAxis = FALSE))
 invisible(dev.off())
 
 layout(matrix(1:6, ncol = 2))
-figure_6(display = c(yAxis = FALSE))
+figure_4(display = c(yAxis = FALSE))
 ```
 
-## Figure S2
+## Figure 5
 
-```{r FigS2, fig.height=8}
-figure_S2 <- function() {
-  simple_heatmap_prominent_seqs(gmblindsimple$summary)
-}
+*Figure 5 is a set of manually-created flowcharts.*
 
-simple_heatmap_prominent_seqs <- function(s) {
-  
-  tbl <- chiimp::summarize_attribute(s,
-                             "ProminentSeqs",
-                             repeats = 1)
+## Table 1
 
-  tbl_na <- chiimp::summarize_attribute(s,
-                                "Allele1Seq",
-                                repeats = 1)
-  tbl_na <- tbl_na[, -(1:2)]
-  tbl_na <- is.na(tbl_na)
-  
-  rownames(tbl) <- tbl$Sample
-  tbl <- tbl[, -(1:2)]
-  colnames(tbl) <- sapply(strsplit(colnames(tbl), "_", 1), "[", 1)
-  tbl[tbl_na] <- 0
-
-  color_func <- grDevices::colorRampPalette(c("white", "red"))
-  colors <- color_func(max(8, max(tbl) + 1))
-  colors[1:3] <- rep(colors[1], 3)
-  colors <- colors[1:max(tbl) + 1]
-  breaks = 0:(length(colors))
-  
-  pheatmap::pheatmap(tbl,
-                     cluster_rows = F,
-                     cluster_cols = F,
-                     breaks = breaks,
-                     color = colors,
-                     cellwidth = 28,
-                     cellheight = 20,
-                     main = "Unique Sequences Passing Read and Length Filters")  
-}
-
-figure_pdf("S2", width = 8.5, height = 11, onefile = FALSE)
-figure_S2()
-invisible(dev.off())
-figure_S2()
-```
+*Table 1 is a manually-created comparison of capillary electrophoresis and MiSeq based genotyping results.*
 
 ## Table 2
 
-```{r Table2, results="asis"}
-# Table 2: Allele and heterozygosity information between CE (capillary 
+*Table 2 is a manually-created table of erroneous allele calls by capillary electrophoresis and MiSeq genotyping methods.*
+
+## Table 3
+
+```{r Table3, results="asis"}
+# Table 3: Allele and heterozygosity information between CE (capillary 
 # electrophoresis) and MiSeq genotypes.  Info for cryptic alleles was handled
 # manually so is not shown here.
 
@@ -383,25 +301,25 @@ g <- subset(g, Name %in% names(missings[missings==0]))
 hz_exp <- hz_exp_loci(g)
 hz_exp_ce <- hz_exp_loci(g_ce)
 
-table_2 <- function() {
-  tbl2 <- data.frame(Locus = names(num_a),
+table_3 <- function() {
+  tbl3 <- data.frame(Locus = names(num_a),
                    NumAllelesCE = num_a_ce,
                    NumAllelesMiSeq = num_a,
                    HCE = hz_exp_ce,
                    HMiSeq = hz_exp,
                    check.names = FALSE,
                    stringsAsFactors = FALSE)
-  tbl2 <- rbind(tbl2, list(Locus = "Total/Mean",
+  tbl3 <- rbind(tbl3, list(Locus = "Total/Mean",
                          NumAllelesCE = sum(num_a_ce),
                          NumAllelesMiSeq = sum(num_a),
                          HCE = mean(hz_exp_ce),
                          HMiSeq = mean(hz_exp)))
-  tbl2
+  tbl3
 }
 
-tbl <- table_2()
+tbl <- table_3()
 tbl[, -1] <- round(tbl[, -1], digits = 2)
-save_table(tbl, file.path(dp_results, "table2.csv"))
+save_table(tbl, file.path(dp_results, "table3.csv"))
 colnames(tbl) <- c("Locus", "CE", "MiSeq", "CE", "MiSeq")
 k <- knitr::kable(tbl,
                   row.names = F,
@@ -416,10 +334,29 @@ kableExtra::add_header_above(k,
 `r sum(missings>0)` individuals out of `r nrow(g_tbl_ce)` excluded due to
 missing CE data: `r names(missings[missings>0])`
 
-## Table S4
+## Table 4
 
-```{r TableS4}
-table_S4 <- function() {
+*Table 4 shows the "cryptic" alleles identified.*
+
+## Table 5
+
+*Table 5 is a comparsion of singleplex and multiplex amplification.*
+
+# Supplemental
+
+## Figure S1
+
+Figure S1 is an example report.  See `results/gombe-round24/report.html` and the
+images in `results/gombe-round24/histograms`.
+
+## Table S1
+
+*Table S1 is a summary of the loci used.*
+
+## Table S2
+
+```{r TableS2}
+table_S2 <- function() {
   g <- gm24$genotypes.known
   g <- g[order(match(g$Locus, LOCI), na.last = NA), ]
   tbl.g <- summarize_genotypes_known(g)
@@ -441,8 +378,12 @@ table_S4 <- function() {
   r
 }
 
-save_table(table_S4(), file.path(dp_results, "tableS4.csv"))
-data <- table_S4()
+save_table(table_S2(), file.path(dp_results, "tableS2.csv"))
+data <- table_S2()
 k <- knitr::kable(data, row.names = FALSE, format = "html")
 kableExtra::kable_styling(k)
 ```
+
+## Table S3
+
+*Table S3 is a comparsion of genotyping results between singleplex and multiplex approaches.*
