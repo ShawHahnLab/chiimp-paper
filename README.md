@@ -1,7 +1,7 @@
 # Non-Invasive Genotyping of Wild Chimpanzees Using High Throughput Microsatellite Sequencing
 
 This directory contains supporting analysis code for the microsatellite
-genotyping paper submitted to Molecular Ecology Resources (in review).
+genotyping paper submitted to Ecology and Evolution (in review).
 
 This code repository as stored on GitHub does not contain data files or the 
 microsatellite analysis program, [CHIIMP], itself.  These will be downloaded
