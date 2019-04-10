@@ -1,7 +1,12 @@
 # Non-Invasive Genotyping of Wild Chimpanzees Using High Throughput Microsatellite Sequencing
 
-This directory contains supporting analysis code for the microsatellite
-genotyping paper submitted to Ecology and Evolution (in review).
+This directory contains supporting analysis code for our 2018 microsatellite
+genotyping paper:
+
+> CHIIMP: An automated high‐throughput microsatellite genotyping platform reveals greater allelic diversity in wild chimpanzees. \
+> Barbian, HJ, Connell, AJ, Avitto, AN, et al. \
+> Ecol Evol. 2018; 8: 7946– 7963. \
+> https://doi.org/10.1002/ece3.4302
 
 This code repository as stored on GitHub does not contain data files or the 
 microsatellite analysis program, [CHIIMP], itself.  These will be downloaded
@@ -14,7 +19,8 @@ page:
 The version archived on Dryad includes a snapshot of all code and data as
 published.  In that case the scripts here will use the same input data and
 program version as used for the published paper to generate a selection of
-figures presented.
+figures presented.  The version of [CHIIMP] included with the Dryad archive is
+a public domain ([CC0]) equivalent of [version 0.1.0] as available on GitHub.
 
 ## Usage
 
@@ -69,3 +75,5 @@ The numbering of the datasets in the metadata spreadsheets corresponds to:
  4. GME samples, PCR multiplex
 
 [CHIIMP]: https://github.com/ShawHahnLab/chiimp
+[CC0]: https://creativecommons.org/publicdomain/zero/1.0/
+[version 0.1.0]: https://github.com/ShawHahnLab/chiimp/releases/tag/0.1.0
