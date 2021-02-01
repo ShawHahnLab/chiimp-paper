@@ -79,6 +79,20 @@ pandoc_pdf <- function(data, fp_out, title) {
                            "-s", fp,
                            "-o", fp_out))
 }
+
+# Wrapper around chiimp::plot_alignment to add some custom axes and labels
+plot_aln_for_paper <- function(aln, ...) {
+  plt <- plot_alignment(
+    aln,
+    labels = NULL,
+    ylab = NULL,
+    display = c(yAxis = FALSE),
+    ...)
+  title(ylab = "Sequence Count", line = 2)
+  axis(2, tick = FALSE, padj = 1, cex.axis = 0.75,
+       at = seq_along(plt$seq),
+       labels = sapply(strsplit(names(plt$seqs), "_"), "[", 2))
+}
 ```
 
 # Main
@@ -95,14 +109,14 @@ figure_1 <- function() {
             locus.name = "C",
             cutoff_fraction = 0.05,
             xlim = c(125, 225))
-  
   #Panel b
-  invisible(plot_alignment(gm24$alignments[["1"]],
-                 main = "a) Sanger-vs-MiSeq 24 - Alignment for Locus 1"))
-  
+  invisible(plot_aln_for_paper(
+    gm24$alignments[["1"]],
+    main = "a) Sanger-vs-MiSeq 24 - Alignment for Locus 1"))
   #Panel c
-  invisible(plot_alignment(gm24$alignments[["C"]],
-                 main = "b) Sanger-vs-MiSeq 24 - Alignment for Locus C"))
+  invisible(plot_aln_for_paper(
+    gm24$alignments[["C"]],
+    main = "b) Sanger-vs-MiSeq 24 - Alignment for Locus C"))
 }
 
 figure_pdf(1)
@@ -215,13 +229,13 @@ alignments <- align_alleles(g)
 alignments_gme <- align_alleles(g_gme)
 alignments_combo <- align_alleles(g_combo)
 
-figure_4 <- function(...) {
-  plot_alignment(alignments_gme[["B"]],   main = "GME Locus B", ...)
-  plot_alignment(alignments[["B"]],       main = "Gombe Locus B", ...)
-  plot_alignment(alignments_combo[["B"]], main = "Combined Locus B", ...)
-  plot_alignment(alignments_gme[["D"]],   main = "GME Locus D", ...)
-  plot_alignment(alignments[["D"]],       main = "Gombe Locus D", ...)
-  plot_alignment(alignments_combo[["D"]], main = "Combined Locus D", ...)
+figure_4 <- function() {
+  plot_aln_for_paper(alignments_gme[["B"]],   main = "GME Locus B")
+  plot_aln_for_paper(alignments[["B"]],       main = "Gombe Locus B")
+  plot_aln_for_paper(alignments_combo[["B"]], main = "Combined Locus B")
+  plot_aln_for_paper(alignments_gme[["D"]],   main = "GME Locus D")
+  plot_aln_for_paper(alignments[["D"]],       main = "Gombe Locus D")
+  plot_aln_for_paper(alignments_combo[["D"]], main = "Combined Locus D")
   invisible()
 }
 
@@ -229,11 +243,11 @@ figure_pdf(4, width = 12, height=12)
 layout(matrix(c(rep(1:3, each=3, times=2),
                 rep(4:6, each=3, times=2),
                 rep(0, 9)), ncol=5))
-figure_4(display = c(yAxis = FALSE))
+figure_4()
 invisible(dev.off())
 
 layout(matrix(1:6, ncol = 2))
-figure_4(display = c(yAxis = FALSE))
+figure_4()
 ```
 
 ## Figure 5
