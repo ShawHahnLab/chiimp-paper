@@ -98,11 +98,11 @@ figure_1 <- function() {
   
   #Panel b
   invisible(plot_alignment(gm24$alignments[["1"]],
-                 main = "a) Sanger-vs-MiSeq 24 - Alignment for Locus 1"))
+                 main = "a) Sanger-vs-MiSeq 24 - Alignment for Locus 1", ylab="sequence count"))
   
   #Panel c
   invisible(plot_alignment(gm24$alignments[["C"]],
-                 main = "b) Sanger-vs-MiSeq 24 - Alignment for Locus C"))
+                 main = "b) Sanger-vs-MiSeq 24 - Alignment for Locus C", ylab="sequence count"))
 }
 
 figure_pdf(1)
@@ -216,12 +216,12 @@ alignments_gme <- align_alleles(g_gme)
 alignments_combo <- align_alleles(g_combo)
 
 figure_4 <- function(...) {
-  plot_alignment(alignments_gme[["B"]],   main = "GME Locus B", ...)
-  plot_alignment(alignments[["B"]],       main = "Gombe Locus B", ...)
-  plot_alignment(alignments_combo[["B"]], main = "Combined Locus B", ...)
-  plot_alignment(alignments_gme[["D"]],   main = "GME Locus D", ...)
-  plot_alignment(alignments[["D"]],       main = "Gombe Locus D", ...)
-  plot_alignment(alignments_combo[["D"]], main = "Combined Locus D", ...)
+  plot_alignment(alignments_gme[["B"]],   ylab = "sequence count", main = "GME Locus B", ...)
+  plot_alignment(alignments[["B"]],       ylab = "sequence count", main = "Gombe Locus B", ...)
+  plot_alignment(alignments_combo[["B"]], ylab = "sequence count", main = "Combined Locus B", ...)
+  plot_alignment(alignments_gme[["D"]],   ylab = "sequence count", main = "GME Locus D", ...)
+  plot_alignment(alignments[["D"]],       ylab = "sequence count", main = "Gombe Locus D", ...)
+  plot_alignment(alignments_combo[["D"]], ylab = "sequence count", main = "Combined Locus D", ...)
   invisible()
 }
 
